@@ -74,8 +74,16 @@ python3 -m http.server 8770
 
 ## 部署
 
-纯静态，零依赖，可直接部署到任意静态托管。
 
+```bash
+git clone git@github.com-functioncomplete-web:functioncomplete/web.git
+git remote set-url origin git@github.com-functioncomplete-web:functioncomplete/web.git
+git push -u origin main
+```
+
+> ⚠️ 私钥与公钥**都不应提交到仓库**。公钥仅在 GitHub 后台登记即可。
+
+.nojekyll` 已就位（防止 Jekyll 处理带下划线/点的路径）。仓库设置里把 Pages 指向根目录即可。
 
 ## 已验证项
 
