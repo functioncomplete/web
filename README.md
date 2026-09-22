@@ -74,8 +74,16 @@ python3 -m http.server 8770
 
 ## 部署
 
-纯静态，零依赖，可直接部署到任意静态托管。
 
+```bash
+# 用别名克隆/推送（github.com 换成 SSH 别名）
+git clone git@github.com-functioncomplete-web:<owner>/<repo>.git
+# 或已有仓库改 remote
+git remote set-url origin git@github.com-functioncomplete-web:<owner>/<repo>.git
+git push -u origin main
+```
+
+`.nojekyll` 已就位（防止 Jekyll 处理带下划线/点的路径）。仓库设置里把 Pages 指向根目录即可。
 
 ## 已验证项
 
