@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FunctionComplete — 门级链上函数与多链部署</title>
-<meta name="description" content="FunctionComplete 以门级链上函数（NAND + LATCH）为唯一计算原语，实现计算层物理上无法作恶的绝对安全。三步走多链部署：以太坊锚定信任根源与函数 NFT 身份，Robinhood Chain 承接 RWA 高频，Solana 提供并行执行与 Groth16 验证。">
+<title>FunctionComplete (FCT) — 技术组件套件 · 门级函数 + 状态容器</title>
+<meta name="description" content="FCT 不是一条链、不是一个代币、不是 L2 —— 它是一套链上计算与状态管理技术组件：以 NAND + LATCH 门级函数承担计算，以容器 + CSC 承担状态，由 Ethercoin 团队构建。任何想提供可靠链上计算服务的网络的理想组件。">
 <meta name="theme-color" content="#070b12">
 <link rel="stylesheet" href="css/style.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23070b12'/><path d='M8 10h5l2 3-2 3H8z' fill='none' stroke='%2322d3ee' stroke-width='2'/><circle cx='21' cy='16' r='4' fill='none' stroke='%2334d399' stroke-width='2'/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23070b12'/><path d='M8 10h5l2 3-2 3H8z' fill='none' stroke='%2322d3ee' stroke-width='2'/><rect x='17' y='9' width='9' height='9' rx='2' fill='none' stroke='%2334d399' stroke-width='2'/><rect x='17' y='20' width='9' height='9' rx='2' fill='none' stroke='%23a78bfa' stroke-width='2'/></svg>">
 </head>
 <body>
 
@@ -23,11 +23,11 @@
       <span class="brand-text">Function<b>Complete</b></span>
     </a>
     <nav class="nav-links" aria-label="主导航">
-      <a href="#problem" data-i18n="nav.problem">问题</a>
-      <a href="#architecture" data-i18n="nav.architecture">架构</a>
-      <a href="#security" data-i18n="nav.security">安全</a>
-      <a href="#performance" data-i18n="nav.performance">性能</a>
-      <a href="#economics" data-i18n="nav.economics">经济</a>
+      <a href="#primitives" data-i18n="nav.primitives">双原语</a>
+      <a href="#components" data-i18n="nav.components">组件</a>
+      <a href="#container" data-i18n="nav.container">容器</a>
+      <a href="#provable" data-i18n="nav.provable">证明</a>
+      <a href="#economy" data-i18n="nav.economy">经济</a>
       <a href="#roadmap" data-i18n="nav.roadmap">路线图</a>
     </nav>
     <div class="nav-actions">
@@ -75,112 +75,42 @@
   <div class="wrap hero-inner">
     <div class="badge reveal">
       <span class="pulse" aria-hidden="true"></span>
-      <span data-i18n="hero.badge">Ethereum L2 · 门级链上函数</span>
+      <span data-i18n="hero.badge">FCT v2 · 技术组件套件 · 不是 L2，不是代币</span>
     </div>
 
     <h1 class="reveal">
-      <span data-i18n="hero.h1a">计算层</span>
-      <em data-i18n="hero.h1b">物理上无法作恶</em>
-      <span data-i18n="hero.h1c">的以太坊 L2</span>
+      <span data-i18n="hero.h1a">门级函数 + 状态容器，</span>
+      <em data-i18n="hero.h1b">计算物理上无法作恶</em>
+      <span data-i18n="hero.h1c">的技术组件套件</span>
     </h1>
 
     <p class="lead reveal" data-i18n="hero.lead">
-      以 NAND 门组合而成、由 LATCH 显示状态的纯计算函数，作为 L2 的唯一计算原语。
-      计算与状态彻底分离 —— 安全性由架构保证，而非应用层代码的质量。
+      FCT 不是一条链、不是一个代币、不是 L2 —— 它是一套链上计算与状态管理技术组件：
+      以 NAND + LATCH 门级函数承担计算，以容器 + CSC 承担状态，由 Ethercoin 团队构建。
+      任何想提供可靠链上计算服务的网络，都能集成 FCT 组件。
     </p>
 
     <div class="hero-cta reveal">
-      <a class="btn btn-primary" href="#architecture" data-i18n="hero.cta1">了解架构</a>
-      <a class="btn btn-ghost" href="FCT-whitepaper-zh.md" data-wp download data-i18n="hero.cta2">阅读白皮书</a>
+      <a class="btn btn-primary" href="#components" data-i18n="hero.cta1">查看组件</a>
+      <a class="btn btn-ghost" href="FCT-whitepaper-zh.md" data-wp download data-i18n="hero.cta2">阅读白皮书 v1.2</a>
     </div>
 
     <ul class="hero-stats reveal">
-      <li><b>5,000–15,000+</b><span data-i18n="hero.stat1">TPS</span></li>
-      <li><b>30–90<span class="unit">ms</span></b><span data-i18n="hero.stat2">TEE 延迟</span></li>
-      <li><b>210,000,000,000</b><span data-i18n="hero.stat3">$FCT 总供应</span></li>
+      <li><b>2</b><span data-i18n="hero.stat1">计算原语（门级函数 + DSU）</span></li>
+      <li><b>5</b><span data-i18n="hero.stat2">类技术组件</span></li>
+      <li><b>0</b><span data-i18n="hero.stat3">代币（统一 ETHER 结算）</span></li>
     </ul>
   </div>
 </section>
 
-<!-- ============ PROBLEM ============ -->
-<section class="section" id="problem">
+<!-- ============ PRIMITIVES ============ -->
+<section class="section" id="primitives">
   <div class="wrap">
-    <p class="eyebrow reveal" data-i18n="problem.eyebrow">现状</p>
-    <h2 class="reveal" data-i18n="problem.h2">现有 L2 的安全性，受制于应用层代码</h2>
-    <p class="section-lead reveal" data-i18n="problem.lead">
-      Optimistic Rollup 用欺诈证明保障安全，但有挑战期延迟与链上争议成本；ZK Rollup 用有效性证明消除了挑战期，
-      但证明生成开销大。更根本的是 —— 两者的 L2 计算逻辑都是<strong>有状态、可调用的智能合约</strong>。
-    </p>
-
-    <div class="grid grid-3">
-      <article class="card reveal">
-        <div class="card-ico" aria-hidden="true">
-          <svg viewBox="0 0 32 32"><path d="M6 16h7l4-7 4 14 4-7h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-        </div>
-        <h3 data-i18n="problem.c1t">组合风险</h3>
-        <p data-i18n="problem.c1d">组合外部合约时必须信任对方不会重入或操纵状态。风险随组合深度累积。</p>
-      </article>
-      <article class="card reveal">
-        <div class="card-ico" aria-hidden="true">
-          <svg viewBox="0 0 32 32"><path d="M16 4l11 6v12l-11 6-11-6V10z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 11v7M16 21v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        </div>
-        <h3 data-i18n="problem.c2t">审计负担</h3>
-        <p data-i18n="problem.c2d">每个新合约都要独立审计。成本高昂，且无法保证完全覆盖。</p>
-      </article>
-      <article class="card reveal">
-        <div class="card-ico" aria-hidden="true">
-          <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M11 16h10M16 11v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        </div>
-        <h3 data-i18n="problem.c3t">形式化验证困难</h3>
-        <p data-i18n="problem.c3d">有状态合约的状态空间巨大，形式化验证极其困难，难以做到全量覆盖。</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============ INSIGHT ============ -->
-<section class="section section-insight">
-  <div class="wrap insight-wrap">
-    <div class="insight-copy">
-      <p class="eyebrow reveal" data-i18n="insight.eyebrow">核心洞察</p>
-      <h2 class="reveal" data-i18n="insight.h2">计算与状态的彻底分离</h2>
-      <p class="reveal" data-i18n="insight.p1">
-        如果 L2 的计算逻辑由一种<strong>物理上无法作恶</strong>的纯逻辑函数承担，
-        而状态管理由独立的、受严格控制的结算合约负责 —— 那么 L2 的安全性
-        将不再依赖应用层代码的质量，而是<strong>由架构本身保证</strong>。
-      </p>
-      <p class="reveal" data-i18n="insight.p2">
-        调用一个陌生人的函数，最坏的结果只是返回一个错误的计算结果，
-        而<strong>无法造成任何安全伤害</strong>。
-      </p>
-    </div>
-    <div class="insight-diagram reveal" aria-hidden="true">
-      <svg viewBox="0 0 320 260">
-        <rect x="10" y="16" width="140" height="96" rx="8" class="d-box"/>
-        <text x="80" y="42" class="d-label" text-anchor="middle">FUNCTION</text>
-        <text x="80" y="62" class="d-sub" text-anchor="middle">NAND + LATCH</text>
-        <text x="80" y="86" class="d-sub" text-anchor="middle" fill="#34d399">pure · read-only</text>
-        <rect x="170" y="148" width="140" height="96" rx="8" class="d-box2"/>
-        <text x="240" y="174" class="d-label" text-anchor="middle">STATE</text>
-        <text x="240" y="194" class="d-sub" text-anchor="middle">settlement contract</text>
-        <text x="240" y="218" class="d-sub" text-anchor="middle" fill="#fbbf24">validates writes</text>
-        <path d="M80 112v40h90" class="d-arrow"/>
-        <path d="M240 148v-40h-90" class="d-arrow dashed"/>
-        <text x="112" y="146" class="d-note">suggests</text>
-        <text x="150" y="176" class="d-note">rejects illegal</text>
-      </svg>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CORE CONCEPT ============ -->
-<section class="section" id="concept">
-  <div class="wrap">
-    <p class="eyebrow reveal" data-i18n="concept.eyebrow">核心概念</p>
-    <h2 class="reveal" data-i18n="concept.h2">门级链上函数</h2>
-    <p class="section-lead reveal" data-i18n="concept.lead">
-      每个函数由 NAND 门网络定义。NAND 是逻辑完备的 —— 仅用它就能构建任意组合逻辑电路；
-      引入 LATCH 存储内部状态后，即可表达时序逻辑，达到图灵完备。
+    <p class="eyebrow reveal" data-i18n="prim.eyebrow">核心概念</p>
+    <h2 class="reveal" data-i18n="prim.h2">双计算原语</h2>
+    <p class="section-lead reveal" data-i18n="prim.lead">
+      FCT 仅依赖两种计算原语构建所有能力：<strong>门级函数</strong>承担计算，<strong>DSU</strong> 承担状态。
+      所有组件、所有证明路径、所有应用场景，都建立在这两个原语之上。
     </p>
 
     <div class="gates">
@@ -196,454 +126,274 @@
           <text x="192" y="54" class="g-pin">Y</text>
         </svg>
         <figcaption>
-          <b data-i18n="concept.nandT">NAND 门</b>
-          <span data-i18n="concept.nandD">逻辑完备的基石。仅用 NAND 即可构建任意组合逻辑电路。</span>
+          <b data-i18n="prim.fnT">门级函数</b>
+          <span data-i18n="prim.fnD">NAND 门逻辑完备 + LATCH 存储状态，可表达任意时序逻辑。无副作用、确定性、可组合 —— 物理上无法作恶。</span>
         </figcaption>
       </figure>
 
       <figure class="gate reveal">
         <svg viewBox="0 0 220 120" aria-hidden="true">
-          <rect x="50" y="30" width="90" height="60" rx="6" class="g-body2"/>
+          <rect x="50" y="18" width="120" height="84" rx="6" class="g-body2"/>
           <path d="M20 60h30" class="g-wire"/>
-          <path d="M140 60h50" class="g-wire"/>
-          <path d="M50 45h-14v30h14" class="g-wire dashed"/>
-          <text x="95" y="56" class="g-text" text-anchor="middle">LATCH</text>
-          <text x="95" y="76" class="g-sub" text-anchor="middle">1 bit</text>
-          <text x="20" y="52" class="g-pin">D</text>
-          <text x="192" y="52" class="g-pin">Q</text>
+          <path d="M170 60h30" class="g-wire"/>
+          <text x="110" y="42" class="g-text" text-anchor="middle">DSU</text>
+          <text x="110" y="62" class="g-sub" text-anchor="middle">数据 · 证明 · 决议</text>
+          <text x="110" y="82" class="g-sub" text-anchor="middle">抽象状态接口</text>
+          <text x="20" y="52" class="g-pin">in</text>
+          <text x="180" y="52" class="g-pin">out</text>
         </svg>
         <figcaption>
-          <b data-i18n="concept.latchT">LATCH 触发器</b>
-          <span data-i18n="concept.latchD">每个 LATCH 保存一位内部状态，在每个计算周期更新。</span>
+          <b data-i18n="prim.dsuT">DSU · 统一状态接口</b>
+          <span data-i18n="prim.dsuD">数据恒定、证明清单、决议记录三表合一，任何状态客户端都可验证，无需信任中间人。</span>
         </figcaption>
       </figure>
     </div>
 
     <div class="table-wrap reveal">
       <table class="data-table">
-        <caption class="sr-only" data-i18n="concept.tableCap">函数的关键特性</caption>
+        <caption class="sr-only" data-i18n="prim.tableCap">双原语的关键特性</caption>
         <thead>
           <tr>
-            <th data-i18n="concept.th1">特性</th>
-            <th data-i18n="concept.th2">说明</th>
+            <th data-i18n="prim.th1">原语</th>
+            <th data-i18n="prim.th2">特性</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td data-i18n="concept.p1k">无副作用</td><td data-i18n="concept.p1v">函数无法调用外部合约，无法写入任何外部状态</td></tr>
-          <tr><td data-i18n="concept.p2k">只读可调用</td><td data-i18n="concept.p2v">调用函数是一次只读查询，不消耗 Gas，不产生交易</td></tr>
-          <tr><td data-i18n="concept.p3k">确定性</td><td data-i18n="concept.p3v">给定相同输入和内部状态，函数总是返回相同输出</td></tr>
-          <tr><td data-i18n="concept.p4k">可组合</td><td data-i18n="concept.p4v">一个函数可作为子模块被另一个函数调用，组合是结构性的</td></tr>
-          <tr><td data-i18n="concept.p5k">形式化可验证</td><td data-i18n="concept.p5v">函数是纯逻辑，天然适合模型检查和定理证明</td></tr>
-          <tr><td data-i18n="concept.p6k">跨链可锚定</td><td data-i18n="concept.p6v">函数 NFT 在以太坊注册，可在多链执行与组合</td></tr>
+          <tr><td data-i18n="prim.p1k">门级函数</td><td data-i18n="prim.p1v">无副作用：无法调用外部合约，无法写入外部状态</td></tr>
+          <tr><td data-i18n="prim.p2k">门级函数</td><td data-i18n="prim.p2v">只读调用：不消耗 Gas，不产生交易</td></tr>
+          <tr><td data-i18n="prim.p3k">门级函数</td><td data-i18n="prim.p3v">确定性：相同输入与状态，总是相同输出</td></tr>
+          <tr><td data-i18n="prim.p4k">门级函数</td><td data-i18n="prim.p4v">可组合：一个函数可作为子模块被另一个函数引用，组合是结构性的</td></tr>
+          <tr><td data-i18n="prim.p5k">DSU</td><td data-i18n="prim.p5v">可验证性：数据、证明、决议由客户端直接验证，无需信任第三方</td></tr>
+          <tr><td data-i18n="prim.p6k">DSU</td><td data-i18n="prim.p6v">抽象性：不关心载体（链、链下存储、去中心化存储），只关心状态的可验证性</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </section>
 
-<!-- ============ ARCHITECTURE ============ -->
-<section class="section section-alt" id="architecture">
+<!-- ============ COMPONENTS ============ -->
+<section class="section section-alt" id="components">
   <div class="wrap">
-    <p class="eyebrow reveal" data-i18n="arch.eyebrow">架构</p>
-    <h2 class="reveal" data-i18n="arch.h2">三层解耦</h2>
+    <p class="eyebrow reveal" data-i18n="comp.eyebrow">技术组件</p>
+    <h2 class="reveal" data-i18n="comp.h2">五类链上技术组件</h2>
+    <p class="section-lead reveal" data-i18n="comp.lead">
+      FCT 的组件是<strong>协议无关</strong>的：它们不预设任何特定网络作为运行环境，而是通过适配器接入任意具备基础记账能力的网络。
+    </p>
 
-    <div class="layers">
-      <article class="layer reveal">
-        <div class="layer-no">L1</div>
-        <div class="layer-body">
-          <h3 data-i18n="arch.l1t">结算层 · 以太坊主网</h3>
-          <p data-i18n="arch.l1d">状态根存储 · 证明验证 · 资产托管 · 最终仲裁</p>
-          <ul class="tags">
-            <li data-i18n="arch.l1a">继承主网经济安全</li>
-            <li data-i18n="arch.l1b">争议的最终仲裁者</li>
-          </ul>
+    <div class="grid grid-3">
+      <article class="card reveal">
+        <div class="card-ico" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><path d="M6 16h7l4-7 4 14 4-7h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
         </div>
+        <h3 data-i18n="comp.c1t">执行 · Executable</h3>
+        <p data-i18n="comp.c1d">门级函数（NAND + LATCH）与 DSU 共同承担计算：函数定义逻辑，DSU 定义状态接口。</p>
       </article>
-
-      <div class="layer-arrow" aria-hidden="true"><span data-i18n="arch.a1">提交状态根 + 证明</span></div>
-
-      <article class="layer reveal">
-        <div class="layer-no">L2</div>
-        <div class="layer-body">
-          <h3 data-i18n="arch.l2t">执行层 · 链下可验证计算网络</h3>
-          <p data-i18n="arch.l2d">并行执行函数 · 生成证明 · 状态树管理 · 交易排序</p>
-          <ul class="tags">
-            <li data-i18n="arch.l2a">TEE / ZK 协处理器</li>
-            <li data-i18n="arch.l2b">水平扩展</li>
-          </ul>
+      <article class="card reveal">
+        <div class="card-ico" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><rect x="6" y="6" width="20" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6 12h20M6 20h20M12 6v20" stroke="currentColor" stroke-width="1.2" opacity=".6"/></svg>
         </div>
+        <h3 data-i18n="comp.c2t">状态 · State</h3>
+        <p data-i18n="comp.c2d">容器（Container）封装节点状态，CSC 压缩状态承诺，历史默克尔树 + 扩展默克尔树 + 状态租金。</p>
       </article>
-
-      <div class="layer-arrow" aria-hidden="true"><span data-i18n="arch.a2">调用函数</span></div>
-
-      <article class="layer layer-key reveal">
-        <div class="layer-no">L3</div>
-        <div class="layer-body">
-          <h3 data-i18n="arch.l3t">计算层 · 门级链上函数</h3>
-          <p data-i18n="arch.l3d">无副作用 · 免信任组合 · 图灵完备 · 形式化可验证</p>
-          <ul class="tags">
-            <li data-i18n="arch.l3a">物理上无法作恶</li>
-            <li data-i18n="arch.l3b">调用不消耗 Gas</li>
-          </ul>
+      <article class="card reveal">
+        <div class="card-ico" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><path d="M16 4l11 6v12l-11 6-11-6V10z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 11v7M16 21v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         </div>
+        <h3 data-i18n="comp.c3t">证明 · Provable</h3>
+        <p data-i18n="comp.c3d">授权可重放、ZK 证明、TEE 证明三种路径并存，用户按安全需求自由选择。</p>
       </article>
-    </div>
-
-    <div class="topology reveal">
-      <h3 class="topo-h" data-i18n="arch.topoH">多链拓扑</h3>
-      <ul class="topo">
-        <li><b data-i18n="arch.topo1t">以太坊主网</b><span data-i18n="arch.topo1d">信任根源 · 结算仲裁 · 函数 NFT 身份锚定</span></li>
-        <li><b data-i18n="arch.topo2t">Robinhood Chain</b><span data-i18n="arch.topo2d">EVM 高频执行层 · RWA 场景入口</span></li>
-        <li><b data-i18n="arch.topo3t">Solana</b><span data-i18n="arch.topo3d">高性能并行执行 · ZK 验证层</span></li>
-        <li><b data-i18n="arch.topo4t">Rome Protocol</b><span data-i18n="arch.topo4d">连接 EVM 与 Solana 的原子互操作桥梁</span></li>
-      </ul>
+      <article class="card reveal">
+        <div class="card-ico" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 5v22M5 16h22" stroke="currentColor" stroke-width="1.2" opacity=".6"/><path d="M26 16c0 5-4.5 9-10 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/></svg>
+        </div>
+        <h3 data-i18n="comp.c4t">清算 · Liquidatable</h3>
+        <p data-i18n="comp.c4d">适配器负责跨链清算：状态根锚定 + 资产托管 + 最终仲裁，链的状态变化可被清算。</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-ico" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><path d="M8 26V10l8-4 8 4v16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 17h8M12 21h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <h3 data-i18n="comp.c5t">身份 · Identifiable</h3>
+        <p data-i18n="comp.c5d">函数 NFT 与容器 NFT：门票、版税登记、管理员身份三位一体，来源可追溯。</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-ico" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><rect x="4" y="4" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="18" y="4" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="4" y="18" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="18" y="18" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        </div>
+        <h3 data-i18n="comp.c6t">载体无关</h3>
+        <p data-i18n="comp.c6d">组件不依赖特定链，通过适配器接入 EVM、Solana、Cosmos、Move 与比特币 L2，逐链推进。</p>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- ============ MULTI-CHAIN ============ -->
-<section class="section" id="multichain">
+<!-- ============ CONTAINER ============ -->
+<section class="section" id="container">
   <div class="wrap">
-    <p class="eyebrow reveal" data-i18n="mc.eyebrow">多链部署</p>
-    <h2 class="reveal" data-i18n="mc.h2">三步走：以太坊 → Robinhood Chain → Solana</h2>
-    <p class="section-lead reveal" data-i18n="mc.lead">每一步都不依赖前一步「完成」，而是独立可验证 —— 某一步遇到技术障碍时，前一步成果不会作废。</p>
-
-    <div class="chain-grid">
-      <article class="chain reveal">
-        <header><span class="chain-no">01</span><h3 data-i18n="mc.c1t">以太坊</h3></header>
-        <p class="chain-role" data-i18n="mc.c1r">信任根源 · 跨链身份层</p>
-        <ul>
-          <li data-i18n="mc.c1a">部署结算合约：状态根与证明的最终验证</li>
-          <li data-i18n="mc.c1b">发布 ERC-721 函数 NFT 标准，定义 NAND 门网络数据结构</li>
-          <li data-i18n="mc.c1c">轻量级 TEE 验证合约，为后续链提供模板</li>
-        </ul>
-      </article>
-      <article class="chain reveal">
-        <header><span class="chain-no">02</span><h3 data-i18n="mc.c2t">Robinhood Chain</h3></header>
-        <p class="chain-role" data-i18n="mc.c2r">近乎零成本的 EVM 移植 · RWA 入口</p>
-        <ul>
-          <li data-i18n="mc.c2a">基于 Arbitrum Orbit + Nitro，Solidity 合约几乎原样迁移</li>
-          <li data-i18n="mc.c2b">约 100ms 出块，状态更新频率提升两个数量级</li>
-          <li data-i18n="mc.c2c">优先费完全转化为创作者版税；已上线约 2000 种代币化股票与 ETF</li>
-        </ul>
-      </article>
-      <article class="chain reveal">
-        <header><span class="chain-no">03</span><h3 data-i18n="mc.c3t">Solana</h3></header>
-        <p class="chain-role" data-i18n="mc.c3r">架构级重构 · 性能极致</p>
-        <ul>
-          <li data-i18n="mc.c3a">函数编译为 BPF 只读纯计算程序：只接受只读账户、不执行 CPI、不标记可写</li>
-          <li data-i18n="mc.c3b">NAND 网络编译为 Noir 电路，Groth16 证明经 alt_bn128 syscalls 验证（170K–500K CU，恒定）</li>
-          <li data-i18n="mc.c3c">函数 NFT 采用 Metaplex Core，Royalties Plugin 强制版税，最多 5 个创作者分成</li>
-        </ul>
-      </article>
-      <article class="chain chain-rome reveal">
-        <header><span class="chain-no">04</span><h3 data-i18n="mc.c4t">Rome Protocol</h3></header>
-        <p class="chain-role" data-i18n="mc.c4r">EVM ↔ Solana 原子互操作</p>
-        <ul>
-          <li data-i18n="mc.c4a">在 Solana 运行时内嵌入完整 EVM 字节码解释器</li>
-          <li data-i18n="mc.c4b">Solidity 合约以 CPI 原子调用 Solana 程序</li>
-          <li data-i18n="mc.c4c">EVM 与 Solana 共享同一状态，无桥接、无包装</li>
-        </ul>
-      </article>
-    </div>
-
-    <div class="risk-note reveal">
-      <h3 data-i18n="mc.riskH">风险控制：渐进式解耦</h3>
-      <ul>
-        <li data-i18n="mc.risk1">以太坊上的函数 NFT 在 Robinhood Chain 迁移之前就已经是有效的</li>
-        <li data-i18n="mc.risk2">Robinhood Chain 上的函数执行在 Solana 程序部署之前就已可独立运行</li>
-        <li data-i18n="mc.risk3">Solana 的 BPF 纯计算程序与 Groth16 验证可独立于 Rome 桥接进行测试</li>
-        <li data-i18n="mc.risk4">Rome Protocol 集成失败不会使以太坊或 Robinhood Chain 上的成果作废</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ============ SECURITY ============ -->
-<section class="section" id="security">
-  <div class="wrap">
-    <p class="eyebrow reveal" data-i18n="sec.eyebrow">安全模型</p>
-    <h2 class="reveal" data-i18n="sec.h2">计算层的绝对安全</h2>
-    <p class="section-lead reveal" data-i18n="sec.lead">
-      这一安全等级在现有 L2 方案中是独一无二的 —— 从架构层面消除了重入、状态操纵等攻击面。
+    <p class="eyebrow reveal" data-i18n="ctr.eyebrow">状态组件</p>
+    <h2 class="reveal" data-i18n="ctr.h2">容器 Container —— 节点状态的"盒子"</h2>
+    <p class="section-lead reveal" data-i18n="ctr.lead">
+      容器装载节点的状态与资产，是网络中<strong>可转让、可授权</strong>的核心载体：
+      转移令牌即转移管理权，持有者获得节点的一切访问权。
     </p>
 
     <div class="grid grid-2">
       <div class="check-list reveal">
-        <div class="check"><span class="ck" aria-hidden="true">✓</span><div><b data-i18n="sec.s1t">免疫重入攻击</b><p data-i18n="sec.s1d">函数无法调用外部合约，重入在物理上不可能发生。</p></div></div>
-        <div class="check"><span class="ck" aria-hidden="true">✓</span><div><b data-i18n="sec.s2t">免疫状态操纵</b><p data-i18n="sec.s2d">函数无法写入外部状态，不存在外部状态被恶意修改的风险。</p></div></div>
-        <div class="check"><span class="ck" aria-hidden="true">✓</span><div><b data-i18n="sec.s3t">免信任组合</b><p data-i18n="sec.s3d">组合任意函数（含陌生人的）最坏只返回错误值，无法造成安全伤害。</p></div></div>
-        <div class="check"><span class="ck" aria-hidden="true">✓</span><div><b data-i18n="sec.s4t">形式化可验证</b><p data-i18n="sec.s4d">函数是纯逻辑，天然适合模型检查与定理证明，可全量验证。</p></div></div>
+        <div class="check"><span class="ck" aria-hidden="true">✓</span><div><b data-i18n="ctr.s1t">可转让</b><p data-i18n="ctr.s1d">一次性可转让令牌与不可转让令牌：转让令牌即转让容器所有权。</p></div></div>
+        <div class="check"><span class="ck" aria-hidden="true">✓</span><div><b data-i18n="ctr.s2t">资产装载</b><p data-i18n="ctr.s2d">天然装载 ETH、ERC-20、ERC-721 资产，作为节点的经济实体。</p></div></div>
+        <div class="check"><span class="ck" aria-hidden="true">✓</span><div><b data-i18n="ctr.s3t">accessToken 授权</b><p data-i18n="ctr.s3d">DSU 访问由 accessToken 控制，授权粒度灵活可撤销。</p></div></div>
+        <div class="check"><span class="ck" aria-hidden="true">✓</span><div><b data-i18n="ctr.s4t">私有状态承诺</b><p data-i18n="ctr.s4d">内部状态以承诺公开，细节对外保密，验证与隐私兼得。</p></div></div>
+        <div class="check"><span class="ck" aria-hidden="true">✓</span><div><b data-i18n="ctr.s5t">管理员联动</b><p data-i18n="ctr.s5d">容器的管理员跟随容器 NFT 的所有权 —— 谁持有 NFT，谁管理容器。</p></div></div>
       </div>
 
       <div class="paths reveal">
-        <h3 data-i18n="sec.pathsH">三条可选的证明路径</h3>
+        <h3 data-i18n="ctr.usesH">典型场景</h3>
         <div class="path">
           <span class="dot dot-tee" aria-hidden="true"></span>
-          <div><b data-i18n="sec.p1t">TEE 路径</b><span data-i18n="sec.p1d">信任硬件制造商 · 百毫秒级延迟 · 性能最高</span></div>
+          <div><b data-i18n="ctr.u1t">AI 服务节点</b><span data-i18n="ctr.u1d">付费推理：调用方支付 ETHER，节点执行门级函数并返回结果，收入沉淀在容器中。</span></div>
         </div>
         <div class="path">
           <span class="dot dot-zk" aria-hidden="true"></span>
-          <div><b data-i18n="sec.p2t">ZK 路径</b><span data-i18n="sec.p2d">信任密码学数学 · 无需信任硬件厂商</span></div>
+          <div><b data-i18n="ctr.u2t">资产托管</b><span data-i18n="ctr.u2d">容器作为托管实体装载资产，状态根锚定到清算链，随时可清算。</span></div>
         </div>
         <div class="path">
           <span class="dot dot-op" aria-hidden="true"></span>
-          <div><b data-i18n="sec.p3t">Optimistic 路径</b><span data-i18n="sec.p3d">信任经济激励 · 链上开销极低</span></div>
+          <div><b data-i18n="ctr.u3t">状态租用</b><span data-i18n="ctr.u3d">CSC 状态租金按字节计价，长期闲置被回收，状态市场提供租金补助。</span></div>
         </div>
-        <p class="paths-note" data-i18n="sec.pathsNote">用户可按应用场景的安全需求，在三种路径之间自由选择。</p>
+
+        <div class="deploy-status reveal">
+          <h4 data-i18n="ctr.statusH">开发状态 · v2 双原语组件套件</h4>
+          <p><span class="status-pill status-live" data-i18n="ctr.status1">M1 容器组件已部署 Sepolia</span></p>
+          <ul class="deploy-list">
+            <li><code>ContainerNFT</code> <span class="addr">0x163C5A5Af93211FcdA4882A07cf0eeFb2eA53780</span></li>
+            <li><code>Container</code> <span class="addr">0xa71F56C1738Ff130378e26b8971131C3BA6E8485</span></li>
+            <li data-i18n="ctr.status2">演示容器 tokenId #1 已铸造，链上验证通过</li>
+          </ul>
+          <p class="paths-note" data-i18n="ctr.status3">后续里程碑：M2 CSC → M3 证明市场 → M4 DSU → M5 门级引擎 → M6 混合模式 → M7 跨链适配。</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ PERFORMANCE ============ -->
-<section class="section section-alt" id="performance">
+<!-- ============ PROVABLE ============ -->
+<section class="section section-alt" id="provable">
   <div class="wrap">
-    <p class="eyebrow reveal" data-i18n="perf.eyebrow">性能</p>
-    <h2 class="reveal" data-i18n="perf.h2">容量不再有硬性上限</h2>
-    <p class="section-lead reveal" data-i18n="perf.lead">
-      链下执行层可水平扩展，TPS 随执行节点数量线性增长 —— 不再受限于单一排序器或证明器的吞吐量。
+    <p class="eyebrow reveal" data-i18n="prv.eyebrow">证明组件</p>
+    <h2 class="reveal" data-i18n="prv.h2">证明市场 —— 计算可靠性的四条路径</h2>
+    <p class="section-lead reveal" data-i18n="prv.lead">
+      以往只有「信任网络」或「信任应用」两种选择。FCT 提供<strong>第四种</strong>：客户端可以直接验证计算，无需信任任何人；
+      需要更强保证时，可组合 ZK 或 TEE 证明。
     </p>
 
-    <div class="table-wrap reveal">
-      <table class="data-table data-table-cmp">
-        <thead>
-          <tr>
-            <th data-i18n="perf.th0">维度</th>
-            <th>Optimistic Rollup</th>
-            <th>ZK Rollup</th>
-            <th class="col-hl">FunctionComplete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td data-i18n="perf.r1">计算原语</td>
-            <td data-i18n="perf.r1a">有状态智能合约</td>
-            <td data-i18n="perf.r1a">有状态智能合约</td>
-            <td class="col-hl" data-i18n="perf.r1c">无副作用门级链上函数</td>
-          </tr>
-          <tr>
-            <td data-i18n="perf.r2">计算安全性</td>
-            <td data-i18n="perf.r2a">存在重入等风险</td>
-            <td data-i18n="perf.r2a">存在重入等风险</td>
-            <td class="col-hl" data-i18n="perf.r2c">物理上无法作恶</td>
-          </tr>
-          <tr>
-            <td data-i18n="perf.r3">组合安全性</td>
-            <td data-i18n="perf.r3a">存在安全风险</td>
-            <td data-i18n="perf.r3a">存在安全风险</td>
-            <td class="col-hl" data-i18n="perf.r3c">免信任组合</td>
-          </tr>
-          <tr>
-            <td data-i18n="perf.r4">形式化验证</td>
-            <td data-i18n="perf.r4a">困难</td>
-            <td data-i18n="perf.r4b">部分支持</td>
-            <td class="col-hl" data-i18n="perf.r4c">天然适合，可全量验证</td>
-          </tr>
-          <tr>
-            <td>TPS</td>
-            <td data-i18n="perf.r5a">约 100–2,000</td>
-            <td data-i18n="perf.r5b">约 2,000–5,000</td>
-            <td class="col-hl" data-i18n="perf.r5c">5,000–15,000+</td>
-          </tr>
-          <tr>
-            <td data-i18n="perf.r6">延迟</td>
-            <td data-i18n="perf.r6a">数分钟（挑战期）</td>
-            <td data-i18n="perf.r6b">数秒至数十秒</td>
-            <td class="col-hl" data-i18n="perf.r6c">30–90 毫秒（TEE）</td>
-          </tr>
-          <tr>
-            <td data-i18n="perf.r7">证明机制</td>
-            <td data-i18n="perf.r7a">欺诈证明</td>
-            <td data-i18n="perf.r7b">有效性证明</td>
-            <td class="col-hl" data-i18n="perf.r7c">可选 TEE / ZK / Optimistic</td>
-          </tr>
-          <tr>
-            <td data-i18n="perf.r8">信任假设</td>
-            <td data-i18n="perf.r8a">诚实挑战者</td>
-            <td data-i18n="perf.r8b">密码学</td>
-            <td class="col-hl" data-i18n="perf.r8c">分层可选</td>
-          </tr>
-          <tr>
-            <td data-i18n="perf.r9">创作者经济</td>
-            <td data-i18n="perf.r9a">无原生激励</td>
-            <td data-i18n="perf.r9a">无原生激励</td>
-            <td class="col-hl" data-i18n="perf.r9c">函数版税 + 挖矿 + 治理奖励</td>
-          </tr>
-          <tr>
-            <td data-i18n="perf.r10">多链安全</td>
-            <td data-i18n="perf.r10a">桥接风险较高</td>
-            <td data-i18n="perf.r10a">桥接风险较高</td>
-            <td class="col-hl" data-i18n="perf.r10c">ETH 锚定 + Rome 共享状态 + Solana 只读程序</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h3 class="sub-h reveal" data-i18n="perf.mcH">多链性能特征</h3>
     <div class="table-wrap reveal">
       <table class="data-table">
         <thead>
           <tr>
-            <th data-i18n="perf.mcC1">链</th>
-            <th data-i18n="perf.mcC2">定位</th>
-            <th data-i18n="perf.mcC3">性能特征</th>
+            <th data-i18n="prv.th1">鉴权路径</th>
+            <th data-i18n="prv.th2">信任假设</th>
+            <th data-i18n="prv.th3">适用场景</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td data-i18n="perf.mc1n">以太坊</td><td data-i18n="perf.mc1p">结算与信任根源</td><td data-i18n="perf.mc1f">12 秒出块，高安全，低执行频率</td></tr>
-          <tr><td data-i18n="perf.mc2n">Robinhood Chain</td><td data-i18n="perf.mc2p">高频 EVM 与 RWA</td><td data-i18n="perf.mc2f">约 100ms 出块，EVM 兼容，近实时状态更新</td></tr>
-          <tr><td data-i18n="perf.mc3n">Solana</td><td data-i18n="perf.mc3p">并行执行与 ZK 验证</td><td data-i18n="perf.mc3f">Sealevel 并行，亚秒级确认，Groth16 验证 170K–500K CU</td></tr>
-          <tr><td data-i18n="perf.mc4n">Rome Protocol</td><td data-i18n="perf.mc4p">EVM-Solana 互操作</td><td data-i18n="perf.mc4f">Solidity 合约运行在 Solana 运行时，CPI 原子调用，共享状态</td></tr>
+          <tr><td data-i18n="prv.r1a">公开可重放</td><td data-i18n="prv.r1b">零信任（客户端重放验证）</td><td data-i18n="prv.r1c">公共函数、开源验证器</td></tr>
+          <tr><td data-i18n="prv.r2a">仅授权重放</td><td data-i18n="prv.r2b">持有 accessToken 即可验证</td><td data-i18n="prv.r2c">私有、受限状态</td></tr>
+          <tr><td data-i18n="prv.r3a">授权 ZK</td><td data-i18n="prv.r3b">信任密码学，链上验证证明</td><td data-i18n="prv.r3c">n 个被引用函数的聚合证明</td></tr>
+          <tr><td data-i18n="prv.r4a">授权 TEE</td><td data-i18n="prv.r4b">信任硬件制造商</td><td data-i18n="prv.r4c">高吞吐、低延迟计算网络</td></tr>
         </tbody>
       </table>
     </div>
-  </div>
-</section>
 
-<!-- ============ ECONOMICS ============ -->
-<section class="section" id="economics">
-  <div class="wrap">
-    <p class="eyebrow reveal" data-i18n="eco.eyebrow">经济模型</p>
-    <h2 class="reveal" data-i18n="eco.h2">$FCT 代币</h2>
-
-    <div class="eco-grid">
-      <div class="reveal">
-        <h3 class="eco-sub" data-i18n="eco.allocH">代币分配</h3>
-        <ul class="alloc">
-          <li><span class="bar" style="--w:40%"></span><b data-i18n="eco.a2">生态基金</b><em>40%</em></li>
-          <li><span class="bar" style="--w:30%"></span><b data-i18n="eco.a3">团队</b><em>30%</em><small data-i18n="eco.a3n">6 年线性释放</small></li>
-          <li><span class="bar" style="--w:10%"></span><b data-i18n="eco.a1">社区挖矿</b><em>10%</em></li>
-          <li><span class="bar" style="--w:20%"></span><b data-i18n="eco.a4">早期支持者</b><em>20%</em></li>
-        </ul>
-        <p class="eco-total"><span data-i18n="eco.totalL">总供应量</span> <b>210,000,000,000 $FCT</b></p>
-      </div>
-
-      <div class="reveal">
-        <h3 class="eco-sub" data-i18n="eco.mechH">三大机制</h3>
-        <div class="mech">
-          <article>
-            <h4 data-i18n="eco.m1t">PoC 质押与罚没</h4>
-            <p data-i18n="eco.m1d">执行节点质押 $FCT 作保证金。提交错误状态根或无效证明即被罚没，一部分销毁、一部分奖励挑战者。</p>
-          </article>
-          <article>
-            <h4 data-i18n="eco.m2t">手续费销毁</h4>
-            <p data-i18n="eco.m2d">EIP-1559 风格：基础费全部销毁、随使用率动态调整；优先费进入执行节点奖励池。使用量越大，通缩压力越强。</p>
-          </article>
-          <article>
-            <h4 data-i18n="eco.m3t">函数版税</h4>
-            <p data-i18n="eco.m3d">函数被引用或组合时，原始设计者获得组合版税，从优先费中扣除，比例 1%。</p>
-          </article>
-        </div>
-
-        <h3 class="eco-sub" style="margin-top:30px" data-i18n="eco.mcH">多链手续费与版税适配</h3>
-        <div class="mech">
-          <article>
-            <h4 data-i18n="eco.mc1t">以太坊结算层</h4>
-            <p data-i18n="eco.mc1d">EIP-1559 风格：基础费全部销毁，优先费进入执行节点奖励池。</p>
-          </article>
-          <article>
-            <h4 data-i18n="eco.mc2t">Robinhood Chain</h4>
-            <p data-i18n="eco.mc2d">排序先到先得，不支持优先费插队。优先费不再用于加速交易，而完全转化为函数创作者的版税来源，经济模型与排序解耦。</p>
-          </article>
-          <article>
-            <h4 data-i18n="eco.mc3t">Solana</h4>
-            <p data-i18n="eco.mc3d">函数 NFT 使用 Metaplex Core，Royalties Plugin 默认强制执行创作者版税，支持最多 5 个创作者分成；状态管理器在函数调用时触发 SPL Token 转账。</p>
-          </article>
-        </div>
-      </div>
+    <div class="risk-note reveal">
+      <h3 data-i18n="prv.noteH">DSU 可验证性</h3>
+      <ul>
+        <li data-i18n="prv.note1">数据、证明、决议三表合一，任何客户端均可直接验证状态更新</li>
+        <li data-i18n="prv.note2">被引用的函数网络自行承担证明费用 —— 主叫方只付一次原函数调用费</li>
+        <li data-i18n="prv.note3">证明市场包含：重放市场、ZK 证明市场、TEE 证明市场，可证明逻辑互联</li>
+      </ul>
     </div>
   </div>
 </section>
 
-<!-- ============ CREATOR ECONOMY ============ -->
-<section class="section section-alt" id="creators">
+<!-- ============ ECONOMY ============ -->
+<section class="section" id="economy">
   <div class="wrap">
-    <p class="eyebrow reveal" data-i18n="creator.eyebrow">创作者经济</p>
-    <h2 class="reveal" data-i18n="creator.h2">让每个函数创作者获得持续回报</h2>
-    <p class="section-lead reveal" data-i18n="creator.lead">
-      设计完全在链下进行 —— 不消耗 Gas，可自由试错。部署后生成函数 NFT，逻辑不可更改，可发布到函数市场。
+    <p class="eyebrow reveal" data-i18n="eco.eyebrow">经济模型</p>
+    <h2 class="reveal" data-i18n="eco.h2">无代币 · 一切以 ETHER 结算</h2>
+    <p class="section-lead reveal" data-i18n="eco.lead">
+      FCT <strong>没有原生代币</strong>。它不发行、不预售、不空投任何资产 —— 经济媒介统一为 ETHER，
+      让组件的价值直接与链上资产绑定，不引入任何投机媒介。
     </p>
 
     <div class="grid grid-3">
-      <article class="card card-sm reveal"><span class="num">01</span><h3 data-i18n="creator.i1t">函数调用版税</h3><p data-i18n="creator.i1d">函数被调用时，优先费的一部分自动分配给创作者，无需信任中介。</p></article>
-      <article class="card card-sm reveal"><span class="num">02</span><h3 data-i18n="creator.i2t">组合版税</h3><p data-i18n="creator.i2d">「加法器」被「乘法器」引用时，乘法器每次被调用，加法器创作者同样获益。</p></article>
-      <article class="card card-sm reveal"><span class="num">03</span><h3 data-i18n="creator.i3t">PoC 挖矿奖励</h3><p data-i18n="creator.i3d">函数挖矿池按调用量、组合次数、验证覆盖度与社区评分，激励优质计算模块供给。</p></article>
-      <article class="card card-sm reveal"><span class="num">04</span><h3 data-i18n="creator.i4t">治理与审计奖励</h3><p data-i18n="creator.i4d">参与治理、提交成功审计报告，可获得 $FCT 与声誉。</p></article>
-      <article class="card card-sm reveal"><span class="num">05</span><h3 data-i18n="creator.i5t">赏金与竞赛</h3><p data-i18n="creator.i5d">「实现高效 SHA-256 函数」「优化 4 位加法器门数量」等任务设一次性赏金。</p></article>
-      <article class="card card-sm card-flywheel reveal">
-        <span class="num">∞</span>
-        <h3 data-i18n="creator.fwT">经济飞轮</h3>
-        <ol class="flywheel">
-          <li data-i18n="creator.fw1">优质函数吸引调用</li>
-          <li data-i18n="creator.fw2">调用产生版税</li>
-          <li data-i18n="creator.fw3">收入吸引更多创作者</li>
-          <li data-i18n="creator.fw4">函数库丰富 → 更多 DApp</li>
-        </ol>
+      <article class="card reveal">
+        <h3 data-i18n="eco.c1t">统一 ETHER 结算</h3>
+        <p data-i18n="eco.c1d">所有费用、版税、清算、租金的结算媒介都是 ETHER —— 无代币、无通胀、无投机。</p>
       </article>
+      <article class="card reveal">
+        <h3 data-i18n="eco.c2t">组合版税</h3>
+        <p data-i18n="eco.c2d">门级函数被引用或组合时，创作者获得 ETHER 版税，从调用方支付的费用中分成。</p>
+      </article>
+      <article class="card reveal">
+        <h3 data-i18n="eco.c3t">费用自理</h3>
+        <p data-i18n="eco.c3d">被引用的函数网络自行承担证明费用，用户只需为自己的原函数调用付费。</p>
+      </article>
+    </div>
+
+    <div class="warn-banner reveal">
+      <strong data-i18n="eco.warnT">反诈骗声明</strong>
+      <p data-i18n="eco.warnD">FCT 无任何代币、预售或空投。任何声称是「FCT 代币」并出售、要求认购或空投的行为均为诈骗，请勿参与。</p>
     </div>
   </div>
 </section>
 
 <!-- ============ ROADMAP ============ -->
-<section class="section" id="roadmap">
+<section class="section section-alt" id="roadmap">
   <div class="wrap">
     <p class="eyebrow reveal" data-i18n="road.eyebrow">路线图</p>
-    <h2 class="reveal" data-i18n="road.h2">三步走多链部署</h2>
+    <h2 class="reveal" data-i18n="road.h2">规范的逐步落地</h2>
 
     <ol class="timeline">
       <li class="reveal">
         <span class="tl-dot" aria-hidden="true"></span>
         <div class="tl-body">
-          <header><b data-i18n="road.s1">第一步</b><span data-i18n="road.p1t">以太坊 — 功能验证与安全锚定</span></header>
+          <header><b data-i18n="road.s1">2026</b><span data-i18n="road.p1t">规范 + 双原语组件开发</span></header>
           <ul>
-            <li data-i18n="road.p1a">发布 FunctionComplete 协议规范</li>
-            <li data-i18n="road.p1b">部署主网/测试网结算合约</li>
-            <li data-i18n="road.p1c">发布 ERC-721 函数 NFT 标准（NAND 门网络数据结构 / 输入输出接口 / 版税参数）</li>
-            <li data-i18n="road.p1d">实现基础函数库：加法器、比较器、哈希等</li>
-            <li data-i18n="road.p1e">部署轻量级 TEE 验证合约</li>
+            <li data-i18n="road.p1a">发布 FCT v2 双原语规范与技术组件白皮书</li>
+            <li data-i18n="road.p1b">开发五类组件：容器、CSC、证明市场、DSU、门级引擎</li>
+            <li data-i18n="road.p1c">在 Sepolia 测试网完成组件级验证与集成测试</li>
           </ul>
-          <p class="tl-value" data-i18n="road.p1v">战略价值：以太坊上的函数 NFT 成为整个生态的身份层，来源与所有权可追溯到主网锚定记录</p>
+          <p class="tl-value" data-i18n="road.p1v">当前进度：M1 容器组件已在 Sepolia 上线并验证；CSC / 证明市场 / DSU 开发中</p>
         </div>
       </li>
       <li class="reveal">
         <span class="tl-dot" aria-hidden="true"></span>
         <div class="tl-body">
-          <header><b data-i18n="road.s2">第二步</b><span data-i18n="road.p2t">Robinhood Chain — 近乎零成本的 EVM 移植与 RWA 落地</span></header>
+          <header><b data-i18n="road.s2">2027</b><span data-i18n="road.p2t">以太坊适配器 + Robinhood Chain</span></header>
           <ul>
-            <li data-i18n="road.p2a">Solidity 合约几乎原样迁移：函数 NFT、版税分配、结算验证逻辑</li>
-            <li data-i18n="road.p2b">适配先到先得排序：优先费完全转化为创作者版税来源</li>
-            <li data-i18n="road.p2c">利用约 100ms 出块实现近实时状态更新</li>
-            <li data-i18n="road.p2d">面向 RWA 落地：股息计算函数、合规检查函数被多个协议免信任组合调用</li>
-            <li data-i18n="road.p2e">上线函数市场、版税合约、PoC 质押罚没与手续费销毁</li>
+            <li data-i18n="road.p2a">以太坊适配器独立审计后部署主网清算/验证器</li>
+            <li data-i18n="road.p2b">Robinhood Chain（Arbitrum Orbit + Nitro）近乎零成本迁移</li>
+            <li data-i18n="road.p2c">约 100ms 出块，优先费完全转化为创作者版税</li>
           </ul>
-          <p class="tl-value" data-i18n="road.p2v">战略价值：以零成本获得 100ms 出块与 RWA 生态入口，验证免信任组合在真实资产场景的价值</p>
         </div>
       </li>
       <li class="reveal">
         <span class="tl-dot" aria-hidden="true"></span>
         <div class="tl-body">
-          <header><b data-i18n="road.s3">第三步</b><span data-i18n="road.p3t">Solana — 架构级重构与性能极致</span></header>
+          <header><b data-i18n="road.s3">2028</b><span data-i18n="road.p3t">Solana 适配器</span></header>
           <ul>
-            <li data-i18n="road.p3a">门级函数编译为 BPF 只读纯计算程序（只读账户 / 无 CPI / 不可写 / PDA 状态）</li>
-            <li data-i18n="road.p3b">NAND 网络编译为 Noir 电路，Groth16 证明经 alt_bn128 syscalls 链上验证</li>
-            <li data-i18n="road.p3c">验证成本约 170K–500K compute units，恒定且可预测</li>
-            <li data-i18n="road.p3d">集成 Rome Protocol，使 Solidity 合约可 CPI 原子调用 Solana 程序</li>
-            <li data-i18n="road.p3e">Metaplex Core 发行函数 NFT，映射 Royalties Plugin；启动 Solana 函数挖矿池与治理</li>
+            <li data-i18n="road.p3a">门级函数编译为只读纯计算程序，Groth16 证明链上验证</li>
+            <li data-i18n="road.p3b">并行执行、亚秒级确认，验证成本恒定可预测</li>
           </ul>
-          <p class="tl-value" data-i18n="road.p3v">战略价值：实现极致性能、并行执行与 Solana 生态互通，完成多链性能与安全闭环</p>
         </div>
       </li>
       <li class="reveal">
         <span class="tl-dot" aria-hidden="true"></span>
         <div class="tl-body">
-          <header><b data-i18n="road.s4">第四步</b><span data-i18n="road.p4t">多链自治与生态扩展</span></header>
+          <header><b data-i18n="road.s4">2029</b><span data-i18n="road.p4t">多链清算自治</span></header>
           <ul>
-            <li data-i18n="road.p4a">实现完全去中心化执行网络</li>
-            <li data-i18n="road.p4b">集成递归 ZK 证明，支持跨周期状态机</li>
-            <li data-i18n="road.p4c">探索跨链函数调用与跨链版税结算</li>
-            <li data-i18n="road.p4d">构建原生应用生态；函数创作者经济全面自治</li>
-            <li data-i18n="road.p4e">多链治理协调：以太坊锚定身份，Robinhood Chain 承接 RWA 高频，Solana 提供高性能并行与 ZK 验证</li>
+            <li data-i18n="road.p4a">EVM、Solana、Cosmos、Move、比特币 L2 全适配</li>
+            <li data-i18n="road.p4b">跨链清算与版税结算自治运转</li>
           </ul>
         </div>
       </li>
@@ -654,14 +404,14 @@
 <!-- ============ CTA ============ -->
 <section class="cta">
   <div class="wrap">
-    <h2 class="reveal" data-i18n="cta.h2">让安全性成为架构的属性</h2>
+    <h2 class="reveal" data-i18n="cta.h2">让链上计算成为架构的属性</h2>
     <p class="reveal" data-i18n="cta.lead">
-      让以太坊 L2 的计算层成为一段物理上无法作恶的代码，
-      让每一个函数创作者都能从自己创造的计算价值中获得持续回报。
+      以门级函数承担计算，以容器承担状态，以 ETHER 结算价值 ——
+      FCT 是一套供任何网络集成的技术组件，安全由架构保证，而非应用层代码的质量。
     </p>
     <div class="hero-cta reveal">
-      <a class="btn btn-primary" href="FCT-whitepaper-zh.md" data-wp download data-i18n="cta.b1">下载白皮书</a>
-      <a class="btn btn-ghost" href="#architecture" data-i18n="cta.b2">重看架构</a>
+      <a class="btn btn-primary" href="FCT-whitepaper-zh.md" data-wp download data-i18n="cta.b1">下载白皮书 v1.2</a>
+      <a class="btn btn-ghost" href="#primitives" data-i18n="cta.b2">重看双原语</a>
     </div>
   </div>
 </section>
@@ -679,12 +429,13 @@
       </svg>
       <span>Function<b>Complete</b></span>
     </div>
-    <p class="footer-note" data-i18n="footer.note">白皮书 v1.0 · 门级链上函数与多链部署</p>
+    <p class="footer-note" data-i18n="footer.note">技术组件白皮书 v1.2 · 双原语组件套件 · 无代币</p>
     <nav class="footer-links" aria-label="页脚导航">
-      <a href="#problem" data-i18n="nav.problem">问题</a>
-      <a href="#architecture" data-i18n="nav.architecture">架构</a>
-      <a href="#security" data-i18n="nav.security">安全</a>
-      <a href="#economics" data-i18n="nav.economics">经济</a>
+      <a href="#primitives" data-i18n="nav.primitives">双原语</a>
+      <a href="#components" data-i18n="nav.components">组件</a>
+      <a href="#container" data-i18n="nav.container">容器</a>
+      <a href="#provable" data-i18n="nav.provable">证明</a>
+      <a href="#economy" data-i18n="nav.economy">经济</a>
       <a href="FCT-whitepaper-zh.md" data-wp download data-i18n="nav.whitepaper">白皮书</a>
     </nav>
   </div>

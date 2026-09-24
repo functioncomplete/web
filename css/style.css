@@ -528,3 +528,26 @@ html[data-lang="en"] .hero h1{
 @media (max-width: 620px){
   .topo li{ grid-template-columns:1fr; gap:3px; }
 }
+
+/* ===== v2 追加：部署状态 / 地址 / 反诈骗横幅 ===== */
+.status-pill{
+  display:inline-block; padding:3px 12px; border-radius:999px;
+  font-family:var(--mono); font-size:.75rem; letter-spacing:.06em;
+}
+.status-live{ color:var(--gr); border:1px solid rgba(52,211,153,.45); background:rgba(52,211,153,.08); }
+.deploy-status{
+  margin-top:26px; padding:16px 18px; border:1px solid var(--line);
+  border-radius:var(--r); background:var(--panel);
+}
+.deploy-status h4{ margin:0 0 10px; font-size:.95rem; color:var(--ink); }
+.deploy-status p{ margin:0 0 8px; }
+.deploy-list{ margin:0; padding:0; list-style:none; }
+.deploy-list li{ font-family:var(--mono); font-size:.82rem; color:var(--ink-2); margin-bottom:6px; }
+.deploy-list .addr{ color:var(--cy); }
+.warn-banner{
+  margin-top:34px; padding:16px 20px; border:1px solid rgba(251,191,36,.5);
+  border-radius:var(--r); background:rgba(251,191,36,.06);
+}
+.warn-banner strong{ color:var(--am); font-size:.95rem; display:block; margin-bottom:6px; }
+.warn-banner p{ margin:0; font-size:.9rem; color:var(--ink-2); }
+.card h3{ color:var(--ink); }

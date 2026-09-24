@@ -1,8 +1,9 @@
 /* ============================================================
-   FunctionComplete — 交互与双语切换
+   FunctionComplete v2 — 交互与双语切换
    策略：HTML 内联中文为初始渲染（利于 SEO / 无 JS 可用）；
         JS 在初始化时快照中文原文，英文由词典提供。
         切换时只做「快照恢复 / 词典覆盖」，避免中英文本重复维护。
+   内容来源：FunctionComplete 技术组件白皮书 v1.2
    ============================================================ */
 (function () {
   'use strict';
@@ -13,308 +14,171 @@
   /* ---------- 英文词典（键与 HTML 的 data-i18n 一一对应） ---------- */
   var EN = {
     /* nav */
-    'nav.problem': 'Problem',
-    'nav.architecture': 'Architecture',
-    'nav.security': 'Security',
-    'nav.performance': 'Performance',
-    'nav.economics': 'Economics',
+    'nav.primitives': 'Primitives',
+    'nav.components': 'Components',
+    'nav.container': 'Container',
+    'nav.provable': 'Provable',
+    'nav.economy': 'Economy',
     'nav.roadmap': 'Roadmap',
     'nav.whitepaper': 'Whitepaper',
 
     /* hero */
-    'hero.badge': 'Ethereum L2 · Gate-level On-chain Functions',
-    'hero.h1a': 'The Ethereum L2 whose',
-    'hero.h1b': 'compute layer cannot do harm',
-    'hero.h1c': '',
-    'hero.lead': 'Pure computation functions built from NAND gates, with LATCH flip-flops exposing internal state, as the sole compute primitive of the L2. Computation and state are fully separated — safety is a property of the architecture, not of application-layer code quality.',
-    'hero.cta1': 'Explore the architecture',
-    'hero.cta2': 'Read the whitepaper',
-    'hero.stat1': 'TPS',
-    'hero.stat2': 'TEE latency',
-    'hero.stat3': '$FCT total supply',
+    'hero.badge': 'FCT v2 · Technical component kit · Not an L2, not a token',
+    'hero.h1a': 'Gate-level functions + state containers,',
+    'hero.h1b': 'compute that physically cannot do harm',
+    'hero.h1c': 'as a technical component kit',
+    'hero.lead': 'FCT is not a chain, not a token, and not an L2 — it is a technical component kit for on-chain computation and state management: NAND + LATCH gate-level functions carry computation, containers + CSC carry state, built by the Ethercoin team. Any network that wants reliable on-chain compute can integrate FCT components.',
+    'hero.cta1': 'Explore the components',
+    'hero.cta2': 'Read whitepaper v1.2',
+    'hero.stat1': 'compute primitives (gate-level functions + DSU)',
+    'hero.stat2': 'classes of technical components',
+    'hero.stat3': 'tokens (all settlement in ETHER)',
 
-    /* problem */
-    'problem.eyebrow': 'Status quo',
-    'problem.h2': 'Today, L2 safety depends on application-layer code',
-    'problem.lead': 'Optimistic Rollups use fraud proofs, but carry challenge-period latency and on-chain dispute costs. ZK Rollups remove the challenge period with validity proofs, but proof generation is expensive. More fundamentally, in both cases the L2 compute logic is a <strong>stateful, callable smart contract</strong>.',
-    'problem.c1t': 'Composability risk',
-    'problem.c1d': 'Composing external contracts requires trusting they will not reenter or manipulate state. Risk compounds with composition depth.',
-    'problem.c2t': 'Audit burden',
-    'problem.c2d': 'Every new contract needs its own audit. Costs are high and full coverage cannot be guaranteed.',
-    'problem.c3t': 'Formal verification is hard',
-    'problem.c3d': 'The state space of stateful contracts is enormous, making formal verification extremely difficult and rarely exhaustive.',
+    /* primitives */
+    'prim.eyebrow': 'Core concept',
+    'prim.h2': 'Two compute primitives',
+    'prim.lead': 'FCT builds every capability on just two compute primitives: <strong>gate-level functions</strong> carry computation, and <strong>DSU</strong> carries state. Every component, every proof path and every application scenario rests on these two primitives.',
+    'prim.fnT': 'Gate-level functions',
+    'prim.fnD': 'NAND gates are functionally complete and LATCH flip-flops store state, expressing arbitrary sequential logic. Side-effect-free, deterministic, composable — physically incapable of doing harm.',
+    'prim.dsuT': 'DSU · Unified state interface',
+    'prim.dsuD': 'Three tables in one — immutable data, proof list and resolution record — so any client can verify state, trusting no intermediary.',
+    'prim.tableCap': 'Key properties of the two primitives',
+    'prim.th1': 'Primitive',
+    'prim.th2': 'Property',
+    'prim.p1k': 'Gate-level function',
+    'prim.p1v': 'Side-effect-free: cannot call external contracts or write external state',
+    'prim.p2k': 'Gate-level function',
+    'prim.p2v': 'Read-only calls: no gas, no transaction',
+    'prim.p3k': 'Gate-level function',
+    'prim.p3v': 'Deterministic: same inputs and state always yield the same output',
+    'prim.p4k': 'Gate-level function',
+    'prim.p4v': 'Composable: a function can be referenced as a submodule of another; composition is structural',
+    'prim.p5k': 'DSU',
+    'prim.p5v': 'Verifiable: data, proofs and resolutions are verified directly by the client, with no trusted third party',
+    'prim.p6k': 'DSU',
+    'prim.p6v': 'Abstract: agnostic to the carrier (chain, off-chain store, decentralized storage) — only the verifiability of state matters',
 
-    /* insight */
-    'insight.eyebrow': 'Core insight',
-    'insight.h2': 'Total separation of computation and state',
-    'insight.p1': 'If the L2 compute logic is carried by pure logic functions that are <strong>physically incapable of doing harm</strong>, while state management is handled by an independent, tightly controlled settlement contract — then L2 safety no longer depends on application-layer code quality, but is <strong>guaranteed by the architecture itself</strong>.',
-    'insight.p2': 'Calling a stranger\u2019s function has exactly one worst case: it returns a wrong result. It <strong>cannot cause any security harm</strong>.',
+    /* components */
+    'comp.eyebrow': 'Technical components',
+    'comp.h2': 'Five classes of on-chain technical components',
+    'comp.lead': 'FCT components are <strong>protocol-agnostic</strong>: they presuppose no particular network as their runtime, and instead connect to any network with basic ledger capability through adapters.',
+    'comp.c1t': 'Execution · Executable',
+    'comp.c1d': 'Gate-level functions (NAND + LATCH) and DSU together carry computation: functions define logic, DSU defines the state interface.',
+    'comp.c2t': 'State · State',
+    'comp.c2d': 'Containers encapsulate node state; CSC compresses state commitments with history + extended Merkle trees and state rent.',
+    'comp.c3t': 'Proof · Provable',
+    'comp.c3d': 'Authorized replay, ZK proofs and TEE proofs coexist — users choose freely by security requirement.',
+    'comp.c4t': 'Liquidation · Liquidatable',
+    'comp.c4d': 'Adapters handle cross-chain liquidation: state root anchoring + asset custody + final arbitration, so chain state changes can be settled.',
+    'comp.c5t': 'Identity · Identifiable',
+    'comp.c5d': 'Function NFTs and container NFTs: ticket, royalty registry and admin identity in one, with traceable provenance.',
+    'comp.c6t': 'Carrier-agnostic',
+    'comp.c6d': 'Components do not depend on a specific chain; adapters connect EVM, Solana, Cosmos, Move and Bitcoin L2s, rolled out chain by chain.',
 
-    /* concept */
-    'concept.eyebrow': 'Core concept',
-    'concept.h2': 'Gate-level on-chain functions',
-    'concept.lead': 'Each function is defined by a network of NAND gates. NAND is functionally complete — it alone can build any combinational logic circuit. Add LATCH flip-flops to hold internal state, and functions express sequential logic, reaching Turing completeness.',
-    'concept.nandT': 'NAND gate',
-    'concept.nandD': 'The functionally complete primitive. NAND alone builds any combinational logic circuit.',
-    'concept.latchT': 'LATCH flip-flop',
-    'concept.latchD': 'Each LATCH stores one bit of internal state, updated every compute cycle.',
-    'concept.tableCap': 'Key properties of functions',
-    'concept.th1': 'Property',
-    'concept.th2': 'Description',
-    'concept.p1k': 'No side effects',
-    'concept.p1v': 'Functions cannot call external contracts or write any external state',
-    'concept.p2k': 'Read-only callable',
-    'concept.p2v': 'Calling a function is a read-only query — no gas, no transaction',
-    'concept.p3k': 'Deterministic',
-    'concept.p3v': 'Given identical input and internal state, a function always returns the same output',
-    'concept.p4k': 'Composable',
-    'concept.p4v': 'A function can be called as a submodule of another; composition is structural',
-    'concept.p5k': 'Formally verifiable',
-    'concept.p5v': 'Pure logic is naturally suited to model checking and theorem proving',
+    /* container */
+    'ctr.eyebrow': 'State component',
+    'ctr.h2': 'Container —— the \u201cbox\u201d of node state',
+    'ctr.lead': 'A container carries a node\u2019s state and assets — the network\u2019s <strong>transferable, authorizable</strong> core carrier: transfer the token and you transfer management, and the holder gains full access to the node.',
+    'ctr.s1t': 'Transferable',
+    'ctr.s1d': 'One-time transferable and non-transferable tokens: transferring the token transfers container ownership.',
+    'ctr.s2t': 'Asset loading',
+    'ctr.s2d': 'Natively loads ETH, ERC-20 and ERC-721 assets as the node\u2019s economic entity.',
+    'ctr.s3t': 'accessToken authorization',
+    'ctr.s3d': 'DSU access is governed by accessTokens — granular, revocable authorization.',
+    'ctr.s4t': 'Private state commitment',
+    'ctr.s4d': 'Internal state is published as a commitment — details stay private while verification is preserved.',
+    'ctr.s5t': 'Admin follows ownership',
+    'ctr.s5d': 'A container\u2019s admin follows its container NFT\u2019s owner — whoever holds the NFT manages the container.',
+    'ctr.usesH': 'Typical use cases',
+    'ctr.u1t': 'AI service node',
+    'ctr.u1d': 'Paid inference: callers pay ETHER, the node executes a gate-level function and returns results; revenue settles into the container.',
+    'ctr.u2t': 'Asset custody',
+    'ctr.u2d': 'The container acts as a custody entity loading assets; state roots anchor to the liquidation chain, always liquidatable.',
+    'ctr.u3t': 'State rental',
+    'ctr.u3d': 'CSC state rent is priced per byte; long-idle state is recycled, with state-market subsidies for rent.',
+    'ctr.statusH': 'Development status · v2 dual-primitive component kit',
+    'ctr.status1': 'M1 Container component deployed on Sepolia',
+    'ctr.status2': 'Demo container tokenId #1 minted; on-chain verification passed',
+    'ctr.status3': 'Upcoming milestones: M2 CSC → M3 proof market → M4 DSU → M5 gate engine → M6 hybrid mode → M7 cross-chain adapters.',
 
-    /* architecture */
-    'arch.eyebrow': 'Architecture',
-    'arch.h2': 'Three decoupled layers',
-    'arch.l1t': 'Settlement layer · Ethereum mainnet',
-    'arch.l1d': 'State root storage · Proof verification · Asset custody · Final arbitration',
-    'arch.l1a': 'Inherits mainnet economic security',
-    'arch.l1b': 'Final arbiter of all disputes',
-    'arch.a1': 'submit state root + proof',
-    'arch.l2t': 'Execution layer · Off-chain verifiable compute network',
-    'arch.l2d': 'Parallel function execution · Proof generation · State tree management · Transaction ordering',
-    'arch.l2a': 'TEE / ZK coprocessors',
-    'arch.l2b': 'Horizontally scalable',
-    'arch.a2': 'call functions',
-    'arch.l3t': 'Compute layer · Gate-level on-chain functions',
-    'arch.l3d': 'No side effects · Trustless composition · Turing complete · Formally verifiable',
-    'arch.l3a': 'Physically cannot do harm',
-    'arch.l3b': 'Calls consume no gas',
+    /* provable */
+    'prv.eyebrow': 'Proof component',
+    'prv.h2': 'Proof market —— four paths to computation reliability',
+    'prv.lead': 'Previously you could only trust the network or trust the app. FCT offers a <strong>fourth option</strong>: clients verify computation directly, trusting no one; and where stronger guarantees are needed, ZK or TEE proofs can be layered on.',
+    'prv.th1': 'Authorization path',
+    'prv.th2': 'Trust assumption',
+    'prv.th3': 'Use case',
+    'prv.r1a': 'Public replay',
+    'prv.r1b': 'Zero trust (client-side replay verification)',
+    'prv.r1c': 'Public functions, open-source verifiers',
+    'prv.r2a': 'Authorized-only replay',
+    'prv.r2b': 'Verify with an accessToken in hand',
+    'prv.r2c': 'Private, restricted state',
+    'prv.r3a': 'Authorized ZK',
+    'prv.r3b': 'Trust cryptography; proofs verified on-chain',
+    'prv.r3c': 'Aggregate proofs over n referenced functions',
+    'prv.r4a': 'Authorized TEE',
+    'prv.r4b': 'Trust hardware manufacturers',
+    'prv.r4c': 'High-throughput, low-latency compute networks',
+    'prv.noteH': 'DSU verifiability',
+    'prv.note1': 'Data, proofs and resolutions live in one place — any client can verify state updates directly',
+    'prv.note2': 'Referenced function networks bear their own proof costs — the caller pays one original function fee',
+    'prv.note3': 'The proof market spans replay, ZK and TEE — provable logic interconnects across them',
 
-    /* security */
-    'sec.eyebrow': 'Security model',
-    'sec.h2': 'Absolute safety of the compute layer',
-    'sec.lead': 'This safety level is unique among existing L2 designs — the attack surface of reentrancy and state manipulation is eliminated at the architectural level.',
-    'sec.s1t': 'Immune to reentrancy',
-    'sec.s1d': 'Functions cannot call external contracts, so reentrancy is physically impossible.',
-    'sec.s2t': 'Immune to state manipulation',
-    'sec.s2d': 'Functions cannot write external state, so there is no external state to maliciously modify.',
-    'sec.s3t': 'Trustless composition',
-    'sec.s3d': 'Composing any function — including a stranger\u2019s — has a worst case of returning a wrong value, never security harm.',
-    'sec.s4t': 'Formally verifiable',
-    'sec.s4d': 'Pure logic is naturally suited to model checking and theorem proving, and can be verified exhaustively.',
-    'sec.pathsH': 'Three selectable proof paths',
-    'sec.p1t': 'TEE path',
-    'sec.p1d': 'Trusts hardware vendors · ~100 ms latency · highest performance',
-    'sec.p2t': 'ZK path',
-    'sec.p2d': 'Trusts cryptography · no need to trust hardware vendors',
-    'sec.p3t': 'Optimistic path',
-    'sec.p3d': 'Trusts economic incentives · minimal on-chain overhead',
-    'sec.pathsNote': 'Users choose freely among the three paths according to their application\u2019s security requirements.',
-
-    /* performance */
-    'perf.eyebrow': 'Performance',
-    'perf.h2': 'Capacity with no hard ceiling',
-    'perf.lead': 'The off-chain execution layer scales horizontally: TPS grows linearly with the number of execution nodes, no longer bounded by a single sequencer or prover.',
-    'perf.th0': 'Dimension',
-    'perf.r1': 'Compute primitive',
-    'perf.r1a': 'Stateful smart contract',
-    'perf.r1c': 'Side-effect-free gate-level function',
-    'perf.r2': 'Compute safety',
-    'perf.r2a': 'Reentrancy and related risks',
-    'perf.r2c': 'Physically cannot do harm',
-    'perf.r3': 'Composition safety',
-    'perf.r3a': 'Security risk exists',
-    'perf.r3c': 'Trustless composition',
-    'perf.r4': 'Formal verification',
-    'perf.r4a': 'Difficult',
-    'perf.r4b': 'Partial support',
-    'perf.r4c': 'Naturally suited, exhaustive',
-    'perf.r5a': '~100–2,000',
-    'perf.r5b': '~2,000–5,000',
-    'perf.r5c': '5,000–15,000+',
-    'perf.r6': 'Latency',
-    'perf.r6a': 'Minutes (challenge period)',
-    'perf.r6b': 'Seconds to tens of seconds',
-    'perf.r6c': '30–90 ms (TEE)',
-    'perf.r7': 'Proof mechanism',
-    'perf.r7a': 'Fraud proof',
-    'perf.r7b': 'Validity proof',
-    'perf.r7c': 'Selectable TEE / ZK / Optimistic',
-    'perf.r8': 'Trust assumption',
-    'perf.r8a': 'Honest challenger',
-    'perf.r8b': 'Cryptography',
-    'perf.r8c': 'Selectable by layer',
-    'perf.r9': 'Creator economy',
-    'perf.r9a': 'No native incentive',
-    'perf.r9c': 'Function royalties + mining + governance rewards',
-
-    /* economics */
-    'eco.eyebrow': 'Economics',
-    'eco.h2': 'The $FCT token',
-    'eco.allocH': 'Token allocation',
-    'eco.a1': 'Community mining',
-    'eco.a2': 'Ecosystem fund',
-    'eco.a3': 'Team',
-    'eco.a3n': '6-year linear vesting',
-    'eco.a4': 'Early supporters',
-    'eco.totalL': 'Total supply',
-    'eco.mechH': 'Three core mechanisms',
-    'eco.m1t': 'PoC staking & slashing',
-    'eco.m1d': 'Execution nodes stake $FCT as collateral. Submitting a wrong state root or invalid proof gets the stake slashed — part burned, part rewarded to the challenger.',
-    'eco.m2t': 'Fee burning',
-    'eco.m2d': 'EIP-1559 style: base fee is fully burned and adjusts dynamically with usage; priority fee flows to the execution node reward pool. The more the protocol is used, the stronger the deflationary pressure.',
-    'eco.m3t': 'Function royalties',
-    'eco.m3d': 'When a function is referenced or composed, its original designer earns a composition royalty, deducted from the priority fee at 1%.',
-
-    /* creator economy */
-    'creator.eyebrow': 'Creator economy',
-    'creator.h2': 'Every function creator earns a lasting return',
-    'creator.lead': 'Design happens entirely off-chain — no gas, free to iterate. Deployment mints a function NFT; the logic becomes immutable and can be published to the function marketplace.',
-    'creator.i1t': 'Call royalties',
-    'creator.i1d': 'When a function is called, part of the priority fee is distributed to its creator automatically, with no trusted intermediary.',
-    'creator.i2t': 'Composition royalties',
-    'creator.i2d': 'When an \u201cadder\u201d is referenced by a \u201cmultiplier\u201d, the adder\u2019s creator earns every time the multiplier is called.',
-    'creator.i3t': 'PoC mining rewards',
-    'creator.i3d': 'A function mining pool rewards quality compute modules by call count, composition count, verification coverage and community rating.',
-    'creator.i4t': 'Governance & audit rewards',
-    'creator.i4d': 'Participating in governance or landing a successful audit report earns $FCT and reputation.',
-    'creator.i5t': 'Bounties & contests',
-    'creator.i5d': 'Tasks like \u201cimplement an efficient SHA-256 function\u201d or \u201cminimize the gate count of a 4-bit adder\u201d carry one-off bounties.',
-    'creator.fwT': 'Economic flywheel',
-    'creator.fw1': 'Quality functions attract calls',
-    'creator.fw2': 'Calls generate royalties',
-    'creator.fw3': 'Revenue attracts more creators',
-    'creator.fw4': 'A richer library draws more DApps',
+    /* economy */
+    'eco.eyebrow': 'Economic model',
+    'eco.h2': 'No token · everything settles in ETHER',
+    'eco.lead': 'FCT has <strong>no native token</strong>. It issues nothing, presells nothing and airdrops nothing — the economic medium is uniformly ETHER, binding component value directly to on-chain assets with no speculative vehicle.',
+    'eco.c1t': 'Uniform ETHER settlement',
+    'eco.c1d': 'All fees, royalties, liquidations and rent settle in ETHER — no token, no inflation, no speculation.',
+    'eco.c2t': 'Composition royalties',
+    'eco.c2d': 'When a gate-level function is referenced or composed, its creator earns an ETHER royalty, split from the caller\u2019s fee.',
+    'eco.c3t': 'Self-settled costs',
+    'eco.c3d': 'The referenced function network bears its own proof costs; the user pays only for their own original function call.',
+    'eco.warnT': 'Scam warning',
+    'eco.warnD': 'FCT has no token, presale or airdrop of any kind. Any \u201cFCT token\u201d offered for sale, subscription or airdrop is a scam. Do not participate.',
 
     /* roadmap */
     'road.eyebrow': 'Roadmap',
-    'road.h2': 'Three-step multi-chain rollout',
+    'road.h2': 'Step-by-step rollout of the spec',
+    'road.s1': '2026',
+    'road.s2': '2027',
+    'road.s3': '2028',
+    'road.s4': '2029',
+    'road.p1t': 'Spec + dual-primitive component development',
+    'road.p1a': 'Publish the FCT v2 dual-primitive spec and technical component whitepaper',
+    'road.p1b': 'Build the five component classes: Container, CSC, proof market, DSU, gate engine',
+    'road.p1c': 'Complete component-level verification and integration tests on Sepolia',
+    'road.p1v': 'Current status: M1 Container live and verified on Sepolia; CSC / proof market / DSU in progress',
+    'road.p2t': 'Ethereum adapter + Robinhood Chain',
+    'road.p2a': 'Ethereum adapter audited independently, then mainnet liquidation/verifier deployment',
+    'road.p2b': 'Robinhood Chain (Arbitrum Orbit + Nitro) near-zero-cost migration',
+    'road.p2c': '~100 ms blocks; priority fees convert entirely into creator royalties',
+    'road.p3t': 'Solana adapter',
+    'road.p3a': 'Gate-level functions compile to read-only pure programs; Groth16 proofs verified on-chain',
+    'road.p3b': 'Parallel execution, sub-second confirmation, constant and predictable verification cost',
+    'road.p4t': 'Multi-chain liquidation autonomy',
+    'road.p4a': 'Full adapters for EVM, Solana, Cosmos, Move and Bitcoin L2s',
+    'road.p4b': 'Cross-chain liquidation and royalty settlement run autonomously',
 
     /* cta */
-    'cta.h2': 'Make safety a property of the architecture',
-    'cta.lead': 'Let the compute layer of Ethereum L2 become code that is physically incapable of doing harm — and let every function creator earn a lasting return from the computation value they create.',
-    'cta.b1': 'Download whitepaper',
-    'cta.b2': 'Revisit the architecture',
+    'cta.h2': 'Make on-chain compute a property of the architecture',
+    'cta.lead': 'Gate-level functions carry computation, containers carry state, ETHER carries value — FCT is a technical component kit any network can integrate, with safety guaranteed by architecture rather than by application-layer code quality.',
+    'cta.b1': 'Download whitepaper v1.2',
+    'cta.b2': 'Revisit the primitives',
 
     /* footer */
-    'footer.note': 'Whitepaper v1.0 · Gate-level on-chain functions & multi-chain deployment',
-    /* --- 多链：架构拓扑 --- */
-    'arch.topoH': 'Multi-chain topology',
-    'arch.topo1t': 'Ethereum mainnet',
-    'arch.topo1d': 'Trust root · Settlement arbitration · Function NFT identity anchor',
-    'arch.topo2t': 'Robinhood Chain',
-    'arch.topo2d': 'High-frequency EVM execution · RWA entry point',
-    'arch.topo3t': 'Solana',
-    'arch.topo3d': 'High-performance parallel execution · ZK verification layer',
-    'arch.topo4t': 'Rome Protocol',
-    'arch.topo4d': 'Atomic interoperability bridge between EVM and Solana',
-
-    /* --- 多链：概念表 --- */
-    'concept.p6k': 'Cross-chain anchorable',
-    'concept.p6v': 'Function NFTs are registered on Ethereum and can be executed and composed across chains',
-
-    /* --- 多链部署章节 --- */
-    'mc.eyebrow': 'Multi-chain',
-    'mc.h2': 'Three steps: Ethereum → Robinhood Chain → Solana',
-    'mc.lead': 'Each step is independently verifiable rather than dependent on the previous one being finished — if a step hits a technical obstacle, earlier results are not invalidated.',
-    'mc.c1t': 'Ethereum',
-    'mc.c1r': 'Trust root · Cross-chain identity layer',
-    'mc.c1a': 'Deploy the settlement contract: final verification of state roots and proofs',
-    'mc.c1b': 'Publish the ERC-721 function NFT standard defining the NAND gate network data structure',
-    'mc.c1c': 'Lightweight TEE verification contract as a template for later chains',
-    'mc.c2t': 'Robinhood Chain',
-    'mc.c2r': 'Near-zero-cost EVM port · RWA entry',
-    'mc.c2a': 'Built on Arbitrum Orbit + Nitro; Solidity contracts migrate almost unchanged',
-    'mc.c2b': '~100 ms block time — two orders of magnitude more frequent state updates',
-    'mc.c2c': 'Priority fees convert entirely into creator royalties; ~2,000 tokenized stocks and ETFs already live',
-    'mc.c3t': 'Solana',
-    'mc.c3r': 'Architectural rewrite · Peak performance',
-    'mc.c3a': 'Functions compile to BPF read-only pure programs: read-only accounts only, no CPI, never writable',
-    'mc.c3b': 'NAND networks compile to Noir circuits; Groth16 proofs verified via alt_bn128 syscalls (170K–500K CU, constant)',
-    'mc.c3c': 'Function NFTs use Metaplex Core; the Royalties Plugin enforces royalties with up to 5 creators',
-    'mc.c4t': 'Rome Protocol',
-    'mc.c4r': 'EVM ↔ Solana atomic interoperability',
-    'mc.c4a': 'Embeds a full EVM bytecode interpreter inside the Solana runtime',
-    'mc.c4b': 'Solidity contracts call Solana programs atomically via CPI',
-    'mc.c4c': 'EVM and Solana share one state — no bridge, no wrapping',
-    'mc.riskH': 'Risk control: progressive decoupling',
-    'mc.risk1': 'Function NFTs on Ethereum are already valid before any Robinhood Chain migration',
-    'mc.risk2': 'Function execution on Robinhood Chain already runs independently before Solana programs are deployed',
-    'mc.risk3': 'Solana BPF pure-compute programs and Groth16 verification can be tested independently of the Rome bridge',
-    'mc.risk4': 'A failed Rome Protocol integration does not invalidate results on Ethereum or Robinhood Chain',
-
-    /* --- 多链性能 --- */
-    'perf.mcH': 'Multi-chain performance characteristics',
-    'perf.mcC1': 'Chain',
-    'perf.mcC2': 'Role',
-    'perf.mcC3': 'Performance characteristics',
-    'perf.mc1n': 'Ethereum',
-    'perf.mc1p': 'Settlement & trust root',
-    'perf.mc1f': '12 s blocks, high security, low execution frequency',
-    'perf.mc2n': 'Robinhood Chain',
-    'perf.mc2p': 'High-frequency EVM & RWA',
-    'perf.mc2f': '~100 ms blocks, EVM compatible, near-real-time state updates',
-    'perf.mc3n': 'Solana',
-    'perf.mc3p': 'Parallel execution & ZK verification',
-    'perf.mc3f': 'Sealevel parallelism, sub-second confirmation, Groth16 verification at 170K–500K CU',
-    'perf.mc4n': 'Rome Protocol',
-    'perf.mc4p': 'EVM-Solana interoperability',
-    'perf.mc4f': 'Solidity contracts run inside the Solana runtime, atomic CPI calls, shared state',
-    'perf.r10': 'Multi-chain security',
-    'perf.r10a': 'Higher bridge risk',
-    'perf.r10c': 'ETH anchoring + Rome shared state + Solana read-only programs',
-
-    /* --- 多链经济适配 --- */
-    'eco.mcH': 'Multi-chain fee & royalty adaptation',
-    'eco.mc1t': 'Ethereum settlement layer',
-    'eco.mc1d': 'EIP-1559 style: base fee fully burned, priority fee to the execution node reward pool.',
-    'eco.mc2t': 'Robinhood Chain',
-    'eco.mc2d': 'First-come-first-served ordering, no priority-fee front-running. Priority fees no longer accelerate transactions but convert entirely into creator royalties — economics decoupled from ordering.',
-    'eco.mc3t': 'Solana',
-    'eco.mc3d': 'Function NFTs use Metaplex Core; the Royalties Plugin enforces creator royalties with up to 5 creators; the state manager triggers SPL Token transfers on each call.',
-
-    /* --- 路线图：三步走多链部署 --- */
-    'road.s1': 'Step 1',
-    'road.s2': 'Step 2',
-    'road.s3': 'Step 3',
-    'road.s4': 'Step 4',
-    'road.p1t': 'Ethereum — Functional validation & security anchoring',
-    'road.p1a': 'Publish the FunctionComplete protocol specification',
-    'road.p1b': 'Deploy the mainnet/testnet settlement contract',
-    'road.p1c': 'Publish the ERC-721 function NFT standard (NAND network data structure / I-O interface / royalty parameters)',
-    'road.p1d': 'Implement the base function library: adder, comparator, hash',
-    'road.p1e': 'Deploy a lightweight TEE verification contract',
-    'road.p1v': 'Strategic value: function NFTs on Ethereum become the identity layer of the ecosystem, with provenance and ownership traceable to the mainnet anchor',
-    'road.p2t': 'Robinhood Chain — Near-zero-cost EVM port & RWA landing',
-    'road.p2a': 'Migrate Solidity contracts almost unchanged: function NFT, royalty distribution, settlement verification',
-    'road.p2b': 'Adapt to first-come-first-served ordering: priority fees convert entirely into creator royalties',
-    'road.p2c': 'Use ~100 ms blocks to achieve near-real-time state updates',
-    'road.p2d': 'Land RWA use cases: dividend-calculation and compliance-check functions composed trustlessly by multiple protocols',
-    'road.p2e': 'Launch the function marketplace, royalty contracts, PoC staking/slashing and fee burning',
-    'road.p2v': 'Strategic value: obtain 100 ms blocks and an RWA ecosystem entry at near-zero cost, proving trustless composition on real assets',
-    'road.p3t': 'Solana — Architectural rewrite & peak performance',
-    'road.p3a': 'Compile gate-level functions to BPF read-only pure programs (read-only accounts / no CPI / never writable / PDA state)',
-    'road.p3b': 'Compile NAND networks to Noir circuits; Groth16 proofs verified on-chain via alt_bn128 syscalls',
-    'road.p3c': 'Verification costs ~170K–500K compute units — constant and predictable',
-    'road.p3d': 'Integrate Rome Protocol so Solidity contracts can atomically CPI-call Solana programs',
-    'road.p3e': 'Issue Solana function NFTs via Metaplex Core with the Royalties Plugin; start the Solana function mining pool and governance',
-    'road.p3v': 'Strategic value: peak performance, parallel execution and Solana ecosystem interoperability — closing the multi-chain loop',
-    'road.p4t': 'Multi-chain autonomy & ecosystem expansion',
-    'road.p4a': 'Fully decentralized execution network',
-    'road.p4b': 'Recursive ZK proofs for cross-cycle state machines',
-    'road.p4c': 'Explore cross-chain function calls and cross-chain royalty settlement',
-    'road.p4d': 'Build the native application ecosystem; full autonomy of the creator economy',
-    'road.p4e': 'Multi-chain governance coordination: Ethereum anchors identity, Robinhood Chain handles high-frequency RWA, Solana provides parallel performance and ZK verification'
+    'footer.note': 'Technical component whitepaper v1.2 · Dual-primitive kit · No token'
   };
 
   var META = {
     zh: {
-      title: 'FunctionComplete — 门级链上函数与多链部署',
-      desc: 'FunctionComplete 以门级链上函数（NAND + LATCH）为唯一计算原语，实现计算层物理上无法作恶的绝对安全。三步走多链部署：以太坊锚定信任根源与函数 NFT 身份，Robinhood Chain 承接 RWA 高频，Solana 提供并行执行与 Groth16 验证。'
+      title: 'FunctionComplete (FCT) — 技术组件套件 · 门级函数 + 状态容器',
+      desc: 'FCT 不是一条链、不是一个代币、不是 L2 —— 它是一套链上计算与状态管理技术组件：以 NAND + LATCH 门级函数承担计算，以容器 + CSC 承担状态，由 Ethercoin 团队构建。任何想提供可靠链上计算服务的网络的理想组件。'
     },
     en: {
-      title: 'FunctionComplete — Gate-level On-chain Functions & Multi-chain Deployment',
-      desc: 'FunctionComplete uses gate-level on-chain functions (NAND + LATCH) as its sole compute primitive, delivering a compute layer that physically cannot do harm. Three-step multi-chain rollout: Ethereum anchors the trust root and function NFT identity, Robinhood Chain handles high-frequency RWA, Solana provides parallel execution and Groth16 verification.'
+      title: 'FunctionComplete (FCT) — Technical Component Kit · Gate-level Functions + State Containers',
+      desc: 'FCT is not a chain, not a token, and not an L2 — it is a technical component kit for on-chain computation and state management: NAND + LATCH gate-level functions carry computation, containers + CSC carry state, built by the Ethercoin team. The ideal component kit for any network that wants reliable on-chain compute.'
     }
   };
 
@@ -322,12 +186,10 @@
   var nodes = Array.prototype.slice.call(document.querySelectorAll('[data-i18n]'));
   var snapshot = new Map();
   nodes.forEach(function (el) {
-    // 含富文本的键（problem.lead）需保存 HTML，其余用纯文本
     snapshot.set(el, el.innerHTML);
   });
 
   function setRich(el, value) {
-    // 词典值里含标签的用 innerHTML，否则用 textContent（更安全）
     if (/<[a-z][\s\S]*>/i.test(value)) el.innerHTML = value;
     else el.textContent = value;
   }
@@ -343,7 +205,7 @@
       if (lang === 'en' && EN[key] != null) {
         setRich(el, EN[key]);
       } else {
-        el.innerHTML = snapshot.get(el);   // 恢复中文快照
+        el.innerHTML = snapshot.get(el);
       }
     });
 
@@ -352,8 +214,7 @@
     var d = document.querySelector('meta[name="description"]');
     if (d) d.setAttribute('content', m.desc);
 
-    // 白皮书下载链接跟随语言
-    var wp = lang === 'en' ? 'FCT-whitepaper-en.md' : 'FCT-whitepaper-zh.md';
+    var wp = lang === 'en' ? 'FCT-whitepaper-zh.md' : 'FCT-whitepaper-zh.md';
     Array.prototype.forEach.call(document.querySelectorAll('[data-wp]'), function (a) {
       a.setAttribute('href', wp);
       a.setAttribute('download', '');
