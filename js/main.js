@@ -3,7 +3,7 @@
    策略：HTML 内联中文为初始渲染（利于 SEO / 无 JS 可用）；
         JS 在初始化时快照中文原文，英文由词典提供。
         切换时只做「快照恢复 / 词典覆盖」，避免中英文本重复维护。
-   内容来源：FunctionComplete 技术组件白皮书 v1.2
+   内容来源：FunctionComplete 技术组件白皮书 v1.3
    ============================================================ */
 (function () {
   'use strict';
@@ -21,6 +21,8 @@
     'nav.economy': 'Economy',
     'nav.roadmap': 'Roadmap',
     'nav.whitepaper': 'Whitepaper',
+    'nav.gatelang': 'GateLang',
+    'nav.gatelangSec': 'GateLang',
 
     /* hero */
     'hero.badge': 'FCT v2 · Technical component kit · Not an L2, not a token',
@@ -29,7 +31,8 @@
     'hero.h1c': 'as a technical component kit',
     'hero.lead': 'FCT is not a chain, not a token, and not an L2 — it is a technical component kit for on-chain computation and state management: NAND + LATCH gate-level functions carry computation, containers + CSC carry state, built by the Ethercoin team. Any network that wants reliable on-chain compute can integrate FCT components.',
     'hero.cta1': 'Explore the components',
-    'hero.cta2': 'Read whitepaper v1.2',
+    'hero.cta2': 'Read whitepaper v1.3',
+    'hero.cta3': 'GateLang frontend',
     'hero.stat1': 'compute primitives (gate-level functions + DSU)',
     'hero.stat2': 'classes of technical components',
     'hero.stat3': 'tokens (all settlement in ETHER)',
@@ -57,6 +60,24 @@
     'prim.p5v': 'Verifiable: data, proofs and resolutions are verified directly by the client, with no trusted third party',
     'prim.p6k': 'DSU',
     'prim.p6v': 'Abstract: agnostic to the carrier (chain, off-chain store, decentralized storage) — only the verifiability of state matters',
+
+    /* gatelang */
+    'gl.eyebrow': 'Unified language frontend',
+    'gl.h2': 'GateLang v2.1 · the unified verifiable-compute language frontend',
+    'gl.lead': 'GateLang takes NAND gates as its only combinational primitive and LATCH as its only state primitive, compiling developer logic into FCT-compatible artifacts through <strong>four layers of abstraction</strong>. Its <code>spec</code> and <code>gateproof</code> generate formal-verification proofs bound to function / container NFTs; AI-assisted development must pass the <code>gatelang-ai-gate</code> gate — <strong>AI is the accelerator, formal verification is the guarantor</strong>.',
+    'gl.tableCap': 'GateLang four-layer abstraction',
+    'gl.th1': 'Layer',
+    'gl.th2': 'Audience and compile target',
+    'gl.r1n': 'L1 gate level',
+    'gl.r1v': 'Hardware engineers / formal researchers → NAND/LATCH netlist (FCT gate-level on-chain functions)',
+    'gl.r2n': 'L2 high-level',
+    'gl.r2v': 'Software developers → gate netlist or DSU calls (FCT gate-level functions + container ABI)',
+    'gl.r3n': 'L3 domain DSL',
+    'gl.r3v': 'Finance / AI / gaming experts → DSU descriptor + dedicated circuits (FCT DSU)',
+    'gl.r4n': 'L4 visual',
+    'gl.r4v': 'Education users / PMs → auto-generated L1/L2 code (FCT function NFT / container NFT)',
+    'gl.dl': 'Download GateLang whitepaper v2.1',
+    'gl.toProvable': 'See the proof path',
 
     /* components */
     'comp.eyebrow': 'Technical components',
@@ -97,9 +118,9 @@
     'ctr.u3t': 'State rental',
     'ctr.u3d': 'CSC state rent is priced per byte; long-idle state is recycled, with state-market subsidies for rent.',
     'ctr.statusH': 'Development status · v2 dual-primitive component kit',
-    'ctr.status1': 'M1 Container · M2 CSC · M3 ProofMarket deployed on Sepolia',
+    'ctr.status1': 'M1 Container · M2 CSC · M3 ProofMarket · M4 shared layer deployed on Sepolia',
     'ctr.status2': 'Demo container tokenId #1 + CSC demo state on-chain; ProofMarket validator vote → reward / slash loop verified',
-    'ctr.status3': 'Upcoming milestones: M4 DSU → M5 gate engine → M6 hybrid mode → M7 cross-chain adapters.',
+    'ctr.status3': 'Upcoming milestones: M5 gate engine → M6 hybrid mode → M7 cross-chain adapters.',
 
     /* provable */
     'prv.eyebrow': 'Proof component',
@@ -149,7 +170,7 @@
     'road.p1a': 'Publish the FCT v2 dual-primitive spec and technical component whitepaper',
     'road.p1b': 'Build the five component classes: Container, CSC, proof market, DSU, gate engine',
     'road.p1c': 'Complete component-level verification and integration tests on Sepolia',
-    'road.p1v': 'Current status: M1 Container · M2 CSC · M3 ProofMarket live and verified on Sepolia; DSU / gate engine in progress',
+    'road.p1v': 'Current status: M1 Container · M2 CSC · M3 ProofMarket · M4 shared layer live and verified on Sepolia; gate engine in progress',
     'road.p2t': 'Ethereum adapter + Robinhood Chain',
     'road.p2a': 'Ethereum adapter audited independently, then mainnet liquidation/verifier deployment',
     'road.p2b': 'Robinhood Chain (Arbitrum Orbit + Nitro) near-zero-cost migration',
@@ -164,11 +185,11 @@
     /* cta */
     'cta.h2': 'Make on-chain compute a property of the architecture',
     'cta.lead': 'Gate-level functions carry computation, containers carry state, ETHER carries value — FCT is a technical component kit any network can integrate, with safety guaranteed by architecture rather than by application-layer code quality.',
-    'cta.b1': 'Download whitepaper v1.2',
+    'cta.b1': 'Download whitepaper v1.3',
     'cta.b2': 'Revisit the primitives',
 
     /* footer */
-    'footer.note': 'Technical component whitepaper v1.2 · Dual-primitive kit · No token'
+    'footer.note': 'Technical component whitepaper v1.3 · Dual-primitive kit · No token'
   };
 
   var META = {
@@ -214,9 +235,15 @@
     var d = document.querySelector('meta[name="description"]');
     if (d) d.setAttribute('content', m.desc);
 
-    var wp = lang === 'en' ? 'FCT-whitepaper-zh.md' : 'FCT-whitepaper-zh.md';
+    var wp = 'FCT-whitepaper-zh.md'; // 目前仅中文版；英文版待补（v1.3 起网站尚未同步）
     Array.prototype.forEach.call(document.querySelectorAll('[data-wp]'), function (a) {
       a.setAttribute('href', wp);
+      a.setAttribute('download', '');
+    });
+
+    var gl = 'GateLang-whitepaper-zh.md'; // GateLang 语言前端白皮书（v2.1）
+    Array.prototype.forEach.call(document.querySelectorAll('[data-gl]'), function (a) {
+      a.setAttribute('href', gl);
       a.setAttribute('download', '');
     });
 
